@@ -11,7 +11,7 @@
 
   "content_scripts": [
     {
-      "matches": ["http://www.v2ex.com/t/*"],
+      "matches": ["http://www.v2ex.com/t/*", "http://v2ex.com/t/*"],
       "css": ["style.css"],
       "js": ["jquery.js", "v2ex_showReplies.js"]
     }
