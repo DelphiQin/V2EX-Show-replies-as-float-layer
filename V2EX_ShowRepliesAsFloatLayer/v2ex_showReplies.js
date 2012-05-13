@@ -37,7 +37,14 @@ $(".reply_content>a").mouseover(function(sender) {
     } else {
         floatLayer.css({left:sender.pageX+10, top:sender.pageY+5});
     }
-    floatLayer.show();
+    intervalId = setInterval(showFloatLayer, 250)
 }).mouseout(function() {
+    clearInterval(intervalId);
+    floatLayer.clearQueue();
+    floatLayer.stop();
     floatLayer.hide();
 });
+
+function showFloatLayer() {
+    floatLayer.fadeIn(300);
+}
