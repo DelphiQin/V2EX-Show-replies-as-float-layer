@@ -1,9 +1,22 @@
 floatLayer = $('<div class="floatLayer">');
+recentlySender = null;
+
 $(document.body).append(floatLayer);
 floatLayer.hide();
+
 $(".reply_content>a").mouseover(function(sender) {
-    // console.info(sender);
-    var username = sender.target.innerHTML;
+    recentlySender = sender;
+    intervalId = setInterval(showFloatLayer, 250)
+}).mouseout(function() {
+    clearInterval(intervalId);
+    floatLayer.clearQueue();
+    floatLayer.stop();
+    floatLayer.hide();
+});
+
+function showFloatLayer() {
+    // console.info(recentlySender);
+    var username = recentlySender.target.innerHTML;
     if (username.length <= 0) {
         return;
     };
@@ -12,7 +25,7 @@ $(".reply_content>a").mouseover(function(sender) {
     var fill = [];
     for (var i=0; i<replys.length; i++) {
         // console.dir($(replys[i]).position());
-        if ($(replys[i]).position().top > sender.pageY) {
+        if ($(replys[i]).position().top > recentlySender.pageY) {
             break;
         };
         var cell = '<div class="cell_style">' + $(replys[i]).parent().siblings(".reply_content").html() + "</div>";
@@ -27,24 +40,15 @@ $(".reply_content>a").mouseover(function(sender) {
     var separateLine = '<hr class="separateLine" />';
     var title = '<div class="title_cell center">'+username+' 的回复</div><hr class="separateTitle" />';
     floatLayer.html(title+last.join(separateLine));
-    // console.info(floatLayer.height()+sender.clientY, window.innerHeight);
-    if (floatLayer.height()+sender.clientY+35 > window.innerHeight) {
-        // console.info(sender.pageY, sender.pageY-(window.innerHeight-sender.clientY));
+    // console.info(floatLayer.height()+recentlySender.clientY, window.innerHeight);
+    if (floatLayer.height()+recentlySender.clientY+35 > window.innerHeight) {
+        // console.info(recentlySender.pageY, recentlySender.pageY-(window.innerHeight-recentlySender.clientY));
         floatLayer.css({
-            left:sender.pageX+10,
-            top:sender.pageY-(floatLayer.height()+sender.clientY+35-window.innerHeight)
+            left:recentlySender.pageX+10,
+            top:recentlySender.pageY-(floatLayer.height()+recentlySender.clientY+35-window.innerHeight)
         });
     } else {
-        floatLayer.css({left:sender.pageX+10, top:sender.pageY+5});
+        floatLayer.css({left:recentlySender.pageX+10, top:recentlySender.pageY+5});
     }
-    intervalId = setInterval(showFloatLayer, 250)
-}).mouseout(function() {
-    clearInterval(intervalId);
-    floatLayer.clearQueue();
-    floatLayer.stop();
-    floatLayer.hide();
-});
-
-function showFloatLayer() {
     floatLayer.fadeIn(300);
 }
