@@ -1,13 +1,25 @@
 {
   // Required
   "name": "V2EX Show Replies",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 2,
 
   // Recommended
   "description": "当鼠标在回复内容中的某个有链接的人名上时，会显示此人在此页的回复",
   // "icons": { ... },
   // "default_locale": "en",
+
+  "background": {
+      "scripts": ["background.js"]
+    },
+
+  "browser_action": {
+      "default_icon": "favicon.ico"
+    },
+
+  "permissions": [
+    "http://*.v2ex.com/"
+  ],
 
   "content_scripts": [
     {
